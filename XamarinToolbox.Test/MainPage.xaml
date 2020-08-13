@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:test="clr-namespace:XamarinToolbox.Test;assembly=XamarinToolbox.Test"
+             xmlns:converters="clr-namespace:XamarinToolbox.Converters;assembly=XamarinToolbox"
+             xmlns:system="clr-namespace:System;assembly=netstandard"
+             xmlns:e="clr-namespace:XamarinToolbox.MarkupExtensions;assembly=XamarinToolbox"
+             xmlns:static="clr-namespace:XamarinToolbox.Test.Static;assembly=XamarinToolbox.Test"
+             xmlns:model="clr-namespace:XamarinToolbox.Test.Model;assembly=XamarinToolbox.Test"
+             x:Class="XamarinToolbox.Test.MainPage">
+    <ContentPage.Resources>
+        <converters:FilterInvocationConverter x:TypeArguments="system:String" x:Key="Filter" Predicate="{e:StaticMethod Filter, Type={x:Type static:FilterClass} }" />
+        <converters:MethodInvocationConverter x:TypeArguments="model:MethodClass, system:String" Method="NoParameter" x:Key="NoParam"/>
+        <converters:MethodInvocationConverter x:TypeArguments="model:MethodClass, system:String" Method="ByteParameter" x:Key="WithParam"/>
+    </ContentPage.Resources>
+    <StackLayout>
+        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
+            <Label Text="Welcome to Xamarin.Forms!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
+        </Frame>
+        <Label Text="Start developing now" FontSize="Title" Padding="30,10,30,10"/>
+        <Label Text="Make changes to your XAML file and save to see your UI update in the running app with XAML Hot Reload. Give it a try!" FontSize="16" Padding="30,0,30,0"/>
+        <Label FontSize="16" Padding="30,24,30,0">
+            <Label.FormattedText>
+                <FormattedString>
+                    <FormattedString.Spans>
+                        <Span Text="Learn more at "/>
+                        <Span Text="https://aka.ms/xamarin-quickstart" FontAttributes="Bold"/>
+                    </FormattedString.Spans>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <test:TestControl TestList="{Binding Path=SomeList, Converter={StaticResource Filter}}" TestText="{Binding Path=SomeText}"/>
+        <Label Text="{Binding Path=MClass, Converter={StaticResource NoParam}}" />
+        <Label Text="{Binding Path=MClass, Converter={StaticResource WithParam}, ConverterParameter={e:Byte 41}}" />
+    </StackLayout>
+
+</ContentPage>
