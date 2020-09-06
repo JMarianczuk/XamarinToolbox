@@ -20,9 +20,14 @@ namespace XamarinToolbox.MarkupExtensions
     }
     public class BoolExtension : PrimitiveTypeExtensionBase<bool> { }
     public class ByteExtension : PrimitiveTypeExtensionBase<byte> { }
+    public class SByteExtension : PrimitiveTypeExtensionBase<sbyte> { }
+    public class CharExtension : PrimitiveTypeExtensionBase<char> { }
     public class ShortExtension : PrimitiveTypeExtensionBase<short> { }
+    public class UShortExtension : PrimitiveTypeExtensionBase<ushort> { }
     public class IntExtension : PrimitiveTypeExtensionBase<int> { }
+    public class UIntExtension : PrimitiveTypeExtensionBase<uint> { }
     public class LongExtension : PrimitiveTypeExtensionBase<long> { }
+    public class ULongExtension : PrimitiveTypeExtensionBase<ulong> { }
     public class FloatExtension : PrimitiveTypeExtensionBase<float> { }
     public class DoubleExtension : PrimitiveTypeExtensionBase<double> { }
     public class DecimalExtension : PrimitiveTypeExtensionBase<decimal> { }

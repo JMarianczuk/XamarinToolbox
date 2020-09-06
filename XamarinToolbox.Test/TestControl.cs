@@ -2,8 +2,6 @@
 using System.Collections.Specialized;
 using System.Diagnostics;
 using Xamarin.Forms;
-using XamarinToolbox.Extensions;
-using XamarinToolbox.Helpers;
 
 namespace XamarinToolbox.Test
 {
@@ -11,9 +9,16 @@ namespace XamarinToolbox.Test
     {
         public static readonly BindableProperty TestListProperty =
             BindableProperty.Create(nameof(TestList), typeof(IEnumerable), typeof(TestControl), propertyChanged: OnTestListChanged);
-        public static readonly PropertyBinding<string> TestTextBinding =
-            PropertyBinding.Create<string, TestControl>(nameof(TestText), propertyChanged: self => self.TestTextChanged);
-        public static readonly BindableProperty TestTextProperty = TestTextBinding.Property;
+        public static readonly BindableProperty TestTextProperty = 
+            BindableProperty.Create(nameof(TestText), typeof(string), typeof(TestControl), propertyChanged: OnTestTextChanged);
+
+        private static void OnTestTextChanged(BindableObject bindable, object oldvalue, object newvalue)
+        {
+            if (bindable is TestControl self && oldvalue is string oldText && newvalue is string newText)
+            {
+                self.TestTextChanged(oldText, newText);
+            }
+        }
 
         public IEnumerable TestList
         {
@@ -23,8 +28,8 @@ namespace XamarinToolbox.Test
 
         public string TestText
         {
-            get => this.GetValue(TestTextBinding);
-            set => this.SetValue(TestTextBinding, value);
+            get => (string) GetValue(TestTextProperty);
+            set => SetValue(TestTextProperty, value);
         }
 
         private Label _text;

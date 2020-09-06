@@ -7,11 +7,25 @@
              xmlns:e="clr-namespace:XamarinToolbox.MarkupExtensions;assembly=XamarinToolbox"
              xmlns:static="clr-namespace:XamarinToolbox.Test.Static;assembly=XamarinToolbox.Test"
              xmlns:model="clr-namespace:XamarinToolbox.Test.Model;assembly=XamarinToolbox.Test"
+             xmlns:xamarinToolbox="clr-namespace:XamarinToolbox;assembly=XamarinToolbox"
              x:Class="XamarinToolbox.Test.MainPage">
     <ContentPage.Resources>
-        <converters:FilterInvocationConverter x:TypeArguments="system:String" x:Key="Filter" Predicate="{e:StaticMethod Filter, Type={x:Type static:FilterClass} }" />
+        <converters:FilterInvocationConverter x:TypeArguments="system:String" x:Key="Filter" Predicate="{e:StaticMethod Filter, Type=static:FilterClass }" />
         <converters:MethodInvocationConverter x:TypeArguments="model:MethodClass, system:String" Method="NoParameter" x:Key="NoParam"/>
-        <converters:MethodInvocationConverter x:TypeArguments="model:MethodClass, system:String" Method="ByteParameter" x:Key="WithParam"/>
+        <converters:MethodInvocationConverter x:TypeArguments="model:MethodClass, system:String" Method="BoolParameter" x:Key="WithParam"/>
+        <converters:SwitchConverter x:Key="switch" x:TypeArguments="test:SomeEnum, system:String">
+            <converters:Case x:TypeArguments="test:SomeEnum, system:String" Value="{x:Static test:SomeEnum.Zero}" Return="zero" />
+            <converters:Case x:TypeArguments="test:SomeEnum, system:String" Value="{x:Static test:SomeEnum.One}" Return="one" />
+            <converters:SwitchConverter.Template>
+                <DataTemplate>
+                    <Label Text="{Binding Path=.}" />
+                </DataTemplate>
+            </converters:SwitchConverter.Template>
+        </converters:SwitchConverter>
+        <converters:SwitchConverter x:Key="switch2" x:TypeArguments="test:SomeEnum, system:Double">
+            <converters:Case x:TypeArguments="test:SomeEnum, system:Double" Value="{x:Static test:SomeEnum.Zero}" Return="0" />
+            <converters:Case x:TypeArguments="test:SomeEnum, system:Double" Value="{x:Static test:SomeEnum.One}" Return="1" />
+        </converters:SwitchConverter>
     </ContentPage.Resources>
     <StackLayout>
         <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
@@ -31,7 +45,9 @@
         </Label>
         <test:TestControl TestList="{Binding Path=SomeList, Converter={StaticResource Filter}}" TestText="{Binding Path=SomeText}"/>
         <Label Text="{Binding Path=MClass, Converter={StaticResource NoParam}}" />
-        <Label Text="{Binding Path=MClass, Converter={StaticResource WithParam}, ConverterParameter={e:Byte 41}}" />
+        <Label Text="{Binding Path=MClass, Converter={StaticResource WithParam}, ConverterParameter={e:Bool False}}" />
+        <Frame Content="{Binding Path=EnumProperty, Converter={StaticResource switch}}" />
+        <Slider Minimum="0" Maximum="3" Value="{Binding Path=EnumProperty, Mode=TwoWay, Converter={StaticResource switch2}}" />
     </StackLayout>
 
 </ContentPage>

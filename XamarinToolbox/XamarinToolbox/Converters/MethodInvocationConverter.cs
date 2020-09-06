@@ -16,8 +16,16 @@ namespace XamarinToolbox.Converters
             {
                 if (_methodInfo == null)
                 {
+                    if (string.IsNullOrEmpty(Method))
+                    {
+                        throw new ArgumentException($"Method cannot be empty");
+                    }
                     var type = typeof(TClass);
                     _methodInfo = type.GetMethod(Method, BindingFlags.Instance | BindingFlags.Public);
+                    if (_methodInfo == null)
+                    {
+                        throw new ArgumentException($"Method {Method} was not found on type {type}");
+                    }
                     if (_methodInfo.ReturnType != typeof(TResult))
                     {
                         throw new ArgumentException($"Method {Method} does not have return type {typeof(TResult)}");
@@ -32,7 +40,10 @@ namespace XamarinToolbox.Converters
                     return (TResult) _methodInfo.Invoke(instance, new object[] { });
                 }
             }
-            return null;
+            else
+            {
+                throw new ArgumentException($"bound object is not of type {typeof(TClass)}, or null");
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

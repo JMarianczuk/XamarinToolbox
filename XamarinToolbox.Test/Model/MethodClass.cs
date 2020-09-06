@@ -26,5 +26,15 @@
         {
             return "byteParameter" + parameter;
         }
+
+        public string BoolParameter(bool parameter)
+        {
+            return "boolParameter" + parameter;
+        }
+
+        public string CharParameter(char parameter)
+        {
+            return "charParameter" + parameter + "after";
+        }
     }
 }
